@@ -492,8 +492,71 @@
     .product-card-wide { grid-template-columns: 1fr; }
     .cta-banner { padding: 40px 32px; }
   }
+  /* Hamburger */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    background: none;
+    border: none;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.3s;
+    transform-origin: center;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 70px; left: 0; right: 0;
+    background: rgba(13,27,42,0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 2px solid var(--gold);
+    padding: 24px 5%;
+    z-index: 999;
+    flex-direction: column;
+    gap: 0;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    display: block;
+    text-decoration: none;
+    color: rgba(255,255,255,0.85);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    transition: color 0.3s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu a.active-link { color: var(--gold); }
+  .mobile-menu .m-cta {
+    margin-top: 16px;
+    background: var(--gold);
+    color: var(--navy) !important;
+    text-align: center;
+    padding: 14px !important;
+    font-weight: 700 !important;
+    border-radius: 2px;
+    border-bottom: none !important;
+  }
+
   @media (max-width: 600px) {
     .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
     .products-grid { grid-template-columns: 1fr; }
     .cta-banner { padding: 32px 24px; }
   }
@@ -521,7 +584,18 @@
     <li><a href="index.html#contact">Kontak</a></li>
     <li><a href="index.html#contact" class="nav-cta">Hubungi Kami</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#about">Tentang</a>
+  <a href="index.html#services">Layanan</a>
+  <a href="products.html" class="active-link">Produk</a>
+  <a href="index.html#contact">Kontak</a>
+  <a href="index.html#contact" class="m-cta">Hubungi Kami →</a>
+</div>
 
 <!-- PAGE HERO -->
 <section class="page-hero">
@@ -1098,3 +1172,30 @@
 </script>
 </body>
 </html>
+
+<script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+
+  // Close on any link click
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  });
+</script>
